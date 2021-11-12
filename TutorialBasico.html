@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Tutorial HTML5</title>	
+    </head>
+    <body>
+	<div class="wrapper">
+	    <input type="button" id="btnActividad" value="Nueva actividad" onclick="obtengaUnaActividad();">
+	    <input type="text" id="actividadSugerida" placeholder="Actividad sugerida">
+	    <input type="button" id="btnMeGusta" value="Me gusta!" onclick="meGusta();">
+	    <div class="lstActividades">
+	      <h1>Actividades que te gustan</h1>
+	      <h1>No te gustó</h1>
+	      <ul id="lstActivadesPreferidas"></ul>
+	      <ul id="lstActivadesRechazadas"></ul>
+	    </div>
+	</div>
+	<style>
+	    body{
+	      background-color: #429ec3; 
+	    }
+	    .wrapper{
+	      width: 1800px;
+	      height: 1200px; 
+	      margin:auto;
+	      margin-top: 100px;
+	      background-image:url('imagenes/happiness.jpg');
+	    }
+	    #actividadSugerida{
+	      width: 300px;
+	    }
+	    .lstActividades{
+	      display:grid;
+	      grid-template-columns: 1fr 1fr;
+	    }
+	  </style>
+	<script>
+	    function obtengaUnaActividad(){
+	      fetch('http://www.boredapi.com/api/activity')
+	      .then(response => response.json())
+	      .then(data => muestreLaActividad(data.activity));
+	    }
+	    function muestreLaActividad(laActividad){
+	      var elInputDeActividad =  document.getElementById("actividadSugerida");
+	      var laActividadAnterior = elInputDeActividad.value;
+	      if(laActividadAnterior){
+		  noMeGusta(laActividadAnterior);
+	      }
+	      elInputDeActividad.value = laActividad; 
+	    }
+	    function meGusta(){
+	      var elInputDeActividad =  document.getElementById("actividadSugerida");
+	      var laListaDeActividades = document.getElementById("lstActivadesPreferidas"); 
+	      laListaDeActividades.innerHTML += "<li>" + elInputDeActividad.value + "</li>";
+	      elInputDeActividad.value = "";
+	    } 
+	    function noMeGusta(laActividad){
+	      var lasActividadesRechazadas = document.getElementById("lstActivadesRechazadas"); 
+	      lasActividadesRechazadas.innerHTML += "<li>" + laActividad + "</li>";
+	    }
+	</script>
+    </body>
+</html>
